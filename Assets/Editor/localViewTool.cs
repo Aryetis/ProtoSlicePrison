@@ -6,7 +6,7 @@ public class localViewTool : EditorWindow
 {
 	static List<GameObject> hiddenObjects = new List<GameObject>();
 
-
+    // TODO : Add take care of hiding/restoring/showing only children of selected GameObject too if any
 
 	[MenuItem ("Tools/localView/HideSelection %&h")]
 	static void HideSelection ()

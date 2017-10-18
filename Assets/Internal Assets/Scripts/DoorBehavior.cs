@@ -39,9 +39,4 @@ public class DoorBehavior : MonoBehaviour
 			state = State.opened;
 		}
 	}
-
-
-
-
-
 }
