@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class EnnemyBehavior : MonoBehaviour
 {
-	public const float speed = 0.05f; // move speed of the ennemy during walking phases
+	public const float speed = 0.05f;                  // move speed of the ennemy during walking phases
 	public const float duplicateSequenceLength = 3.0f; // time of the duplicating sequence (=> addToButtonListno movement)
 	public const float stunLength = 3.0f; // Stun time caused by upper collision with the player 
 	public GameObject ennemyPrefab; // ennemyPrefab used to spawn clones
