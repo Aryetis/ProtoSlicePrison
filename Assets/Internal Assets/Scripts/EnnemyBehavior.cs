@@ -9,25 +9,24 @@ public class EnnemyBehavior : MonoBehaviour
 {
     [SerializeField] private const float speed = 0.05f;                  // move speed of the ennemy during walking phases
     [SerializeField] private const float duplicateSequenceLength = 3.0f; // time of the duplicating sequence (=> addToButtonListno movement)
-    [SerializeField] private const float stunLength = 3.0f; // Stun time caused by upper collision with the player 
-    [SerializeField] private GameObject ennemyPrefab; // ennemyPrefab used to spawn clones
-    [SerializeField] private Material walkingEnnemy; // materials used during walking phases
-    [SerializeField] private Material stunnedEnnemy; // materials used during stunned phases
-    [SerializeField] private Material duplicatingEnnemy; // materials used during duplicating phases
-    [SerializeField] private Material newBorn; // materials used during born phases
-    [SerializeField] private const float dmg = 10f; // damage dealt to the player by collision 
+    [SerializeField] private const float stunLength = 3.0f;              // Stun time caused by upper collision with the player 
+    [SerializeField] private GameObject ennemyPrefab;                    // ennemyPrefab used to spawn clones
+    [SerializeField] private Material walkingEnnemy;                     // materials used during walking phases
+    [SerializeField] private Material stunnedEnnemy;                     // materials used during stunned phases
+    [SerializeField] private Material duplicatingEnnemy;                 // materials used during duplicating phases
+    [SerializeField] private Material newBorn;                           // materials used during born phases
+    [SerializeField] private const float dmg = 10f;                      // damage dealt to the player by collision 
 		
-    private GameObject father; // father of the current ennemy <=> ennemy who gave born to him (used to cancel collisions between each others)
-    private static GameObject childOf; // "directory" used to store ennemies instance in the unity hierarchy
+    private GameObject father;                                          // father of the current ennemy <=> ennemy who gave born to him (used to cancel collisions between each others)
+    private static GameObject childOf;                                  // "directory" used to store ennemies instance in the unity hierarchy
 	private enum State {walking, duplicating, stunned, newBorn };
 	private State state = State.walking;
 	private bool stateUpdated = true;
 	private Renderer renderer;
-//	private GameObject linkedButton; //button associated to ennemy
-    private ButtonBehavior linkedButton;
-	private GameObject raycastedButton; // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
-	private float maxDistanceRaycast = 10.0f; //maximum distance for raycasting during button detection
-    private RaycastHit directDownHit;
+    private ButtonBehavior linkedButton;                                //button associated to ennemy
+	private GameObject raycastedButton;                                 // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
+	private float maxDistanceRaycast = 10.0f;                           // maximum distance for raycasting during button detection
+    private RaycastHit directDownHit;                                   // 
 
 
 
@@ -39,6 +38,7 @@ public class EnnemyBehavior : MonoBehaviour
         renderer = GetComponent<Renderer>();
 		linkedButton = null;
 		renderer = GetComponent<Renderer>();
+        pushAppartForce = new Vector2 (Random.value, Random.value);
     }
 	
 	
@@ -132,8 +132,8 @@ public class EnnemyBehavior : MonoBehaviour
 		{
 			// Stun when collisioning with player from above
             // TODO change to raycast and measure angle to determine if above or not, should work better with slanted cubes
-		    if ( collision.gameObject.transform.position.y - this.transform.position.y >=
-		        this.GetComponent<Collider>().bounds.size.y && state == State.walking )
+		    if ( collision.gameObject.transform.position.y - transform.position.y >=
+		        GetComponent<Collider>().bounds.size.y && state == State.walking )
 			    changeToStunned();
 			else 
 				PlayerBehavior.takeDamage(dmg);
@@ -201,8 +201,6 @@ public class EnnemyBehavior : MonoBehaviour
 
 	void newBornAction()
 	{
-		stateUpdated = false;
-
 		// add repusling force
 		//TODO add repulsion force (with Y axis support if stuck on XZ)
         //  sphereCast to determine direction with some random and layers 
@@ -212,13 +210,20 @@ public class EnnemyBehavior : MonoBehaviour
 
 		/*****************************************************************************************************/
 		//detect collision with father
-		if( ! renderer.bounds.Intersects(father.GetComponent<Renderer>().bounds) ) 
-		{ // if no more collision, swtich to walking State
-			//reactivate collisions
-			Physics.IgnoreCollision(this.GetComponent<Collider>(), father.GetComponent<Collider>(), false);
+        if (!renderer.bounds.Intersects (father.GetComponent<Renderer> ().bounds))
+        { // if no more collision, swtich to walking State
+            //reactivate collisions
+            stateUpdated = false;
+            Physics.IgnoreCollision (GetComponent<Collider> (), father.GetComponent<Collider> (), false);
+            changeToWalking ();
+        }
+        else
+        {
+            stateUpdated = true; // Ennemies still colliding => apply force and check state till there is no more collisions
+            //TODO add repulsion force (with Y axis support if stuck on XZ)
+            //  sphereCast to determine direction with some random and layers
+        }
 
-			changeToWalking();
-		}
 	}
 
 
@@ -229,12 +234,12 @@ public class EnnemyBehavior : MonoBehaviour
 
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		GameObject clone = Instantiate(ennemyPrefab) as GameObject;
-		clone.GetComponent<EnnemyBehavior>().father = this.gameObject;
+		clone.GetComponent<EnnemyBehavior>().father = gameObject;
 		clone.GetComponent<EnnemyBehavior>().state = State.newBorn;
-		Physics.IgnoreCollision(clone.GetComponent<Collider>(), this.GetComponent<Collider>()); //desactivate collision between father and son BEFORE moving the position
+		Physics.IgnoreCollision(clone.GetComponent<Collider>(), GetComponent<Collider>()); //desactivate collision between father and son BEFORE moving the position
 		clone.GetComponent<Renderer>().material = newBorn;
 		clone.transform.parent = childOf.transform ;
-		clone.transform.position = this.transform.position;
+		clone.transform.position = transform.position;
 
 		yield return new WaitForSeconds(waitTime);
 

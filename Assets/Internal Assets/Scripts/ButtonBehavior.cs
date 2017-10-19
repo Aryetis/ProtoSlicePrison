@@ -41,7 +41,7 @@ public class ButtonBehavior : MonoBehaviour
 		{
 			stateUpdated = false;
 
-Debug.Log("New weight ="+actualWeight);
+//Debug.Log("New weight ="+actualWeight);
 			switch(state)
 		    {
 				case State.pushed:
