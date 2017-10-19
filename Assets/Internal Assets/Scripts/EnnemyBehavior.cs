@@ -23,10 +23,11 @@ public class EnnemyBehavior : MonoBehaviour
 	private State state = State.walking;
 	private bool stateUpdated = true;
 	private Renderer renderer;
-	private GameObject linkedButton; //button associated to ennemy
+//	private GameObject linkedButton; //button associated to ennemy
+    private ButtonBehavior linkedButton;
 	private GameObject raycastedButton; // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
 	private float maxDistanceRaycast = 10.0f; //maximum distance for raycasting during button detection
-
+    private RaycastHit directDownHit;
 
 
 
@@ -38,13 +39,26 @@ public class EnnemyBehavior : MonoBehaviour
         renderer = GetComponent<Renderer>();
 		linkedButton = null;
 		renderer = GetComponent<Renderer>();
-	}
+    }
 	
 	
 	
-	// Update is called once per frame
+	// Update is called once per 0.2ms
 	void FixedUpdate ()
 	{	
+        /*
+         * BUTTON SWITCHING HANDLER
+         */
+        if (linkedButton != null)
+        {
+            // Check that we didn't slide off the button (stacked up cube situation)
+            if (linkedButton != checkButtonByRaycast ())
+            {
+                linkedButton.removeEnnemy (gameObject);
+                linkedButton = null;
+            }
+        }
+
 		/*
 		 * STATE HANDLER
 		 */
@@ -124,13 +138,23 @@ public class EnnemyBehavior : MonoBehaviour
 			else 
 				PlayerBehavior.takeDamage(dmg);
 		}
+
+        if (collision.gameObject.tag == "Ennemy")
+        {
+            ButtonBehavior foo = collision.gameObject.GetComponent<EnnemyBehavior>().linkedButton;
+            if (foo != null && checkButtonByRaycast () == foo)
+            {
+                linkedButton = foo;
+                linkedButton.addEnnemy(gameObject);
+            }
+        }
 	}
 	
 	
 	
 	void OnCollisionExit(Collision collision)
 	{
-
+        // linkedButton.removeEnnemy done in the fixedUpdate !
 	}
 	
 	
@@ -138,10 +162,11 @@ public class EnnemyBehavior : MonoBehaviour
 	void OnTriggerEnter(Collider collision)
 	{
 		// used to handle button's interactions (cf checkButton())
-		if ( collision.gameObject.tag == "Button" && checkButtonByRaycast() == collision.gameObject )
+        if ( collision.gameObject.tag == "Button" )
 		{   // if we're "colliding" with button and we're clearly above it (raycast sent from center of ennemy hit the button) 
 		    // (update or) link linkedButton variable
-
+            linkedButton = collision.gameObject.GetComponent<ButtonBehavior>();
+            linkedButton.addEnnemy(gameObject);
 		}
 	}
 	
@@ -149,12 +174,7 @@ public class EnnemyBehavior : MonoBehaviour
 	
 	void OnTriggerExit(Collider collision)
 	{
-		// used to handle button's interactions (cf checkButton())
-
-		if ( collision.gameObject.tag == "Button" && linkedButton == collision.gameObject)
-		{
-            
-		}
+        // linkedButton.removeEnnemy done in the fixedUpdate !
 	}
 	
 	
@@ -244,7 +264,7 @@ public class EnnemyBehavior : MonoBehaviour
 
 
 
-	private GameObject checkButtonByRaycast()
+    private ButtonBehavior checkButtonByRaycast()
 	{
 		// return button under ennemy (if any) 
 		// WARNING doesn't check if in collision (directly or not) 
@@ -252,7 +272,7 @@ public class EnnemyBehavior : MonoBehaviour
 		RaycastHit hitObject; // contains informations about first hit object 
 		Debug.DrawRay(transform.position, Vector3.down * maxDistanceRaycast );
 		if ( Physics.Raycast(transform.position, Vector3.down, out hitObject, maxDistanceRaycast, (1<<10)) )
-			return hitObject.collider.gameObject;
+            return hitObject.collider.gameObject.GetComponent<ButtonBehavior>();
 		else
 			return null;
 	}
