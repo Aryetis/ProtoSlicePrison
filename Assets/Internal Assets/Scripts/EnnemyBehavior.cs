@@ -38,7 +38,6 @@ public class EnnemyBehavior : MonoBehaviour
         renderer = GetComponent<Renderer>();
 		linkedButton = null;
 		renderer = GetComponent<Renderer>();
-        pushAppartForce = new Vector2 (Random.value, Random.value);
     }
 	
 	
