@@ -48,15 +48,16 @@ public class EnnemyBehavior : MonoBehaviour
         /*
          * BUTTON SWITCHING HANDLER
          */
-        if (linkedButton != null)
-        {
-            // Check that we didn't slide off the button (stacked up cube situation)
-            if (linkedButton != checkButtonByRaycast ())
-            {
-                linkedButton.removeEnnemy (gameObject);
-                linkedButton = null;
-            }
-        }
+        //TODO : DEBUG IT / FIND A WAY AROUND IT / WHAT CAUSED IT TO NOT WORK ANYMORE ? WAS IT WORKING IN THE FIRST PLACE ?
+//        if (linkedButton != null)
+//        {
+//            // Check that we didn't slide off the button (stacked up cube situation)
+//            if (linkedButton != checkButtonByRaycast ())
+//            {
+//                linkedButton.removeEnnemy (gameObject);
+//                linkedButton = null;
+//            }
+//        }
 
 		/*
 		 * STATE HANDLER
