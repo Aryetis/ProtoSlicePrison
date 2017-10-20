@@ -48,7 +48,8 @@ public class EnnemyBehavior : MonoBehaviour
         /*
          * BUTTON SWITCHING HANDLER
          */
-        //TODO : DEBUG IT / FIND A WAY AROUND IT / WHAT CAUSED IT TO NOT WORK ANYMORE ? WAS IT WORKING IN THE FIRST PLACE ?
+
+        //TODO : BEAUTIFY IT / WHAT CAUSED IT TO NOT WORK ANYMORE ? WAS/IS IT WORKING IN THE FIRST PLACE ?
         if (linkedButton != null)
         {
 
@@ -59,7 +60,7 @@ public class EnnemyBehavior : MonoBehaviour
                 linkedButton = null;
             }
             // check that we're not entering button anymore / we're now ON the button
-            if (linkedButton != checkButtonByRaycast () && enteringButton == true)
+            if (linkedButton == checkButtonByRaycast () && enteringButton == true)
                 enteringButton = false;
         }
 
@@ -161,8 +162,8 @@ public class EnnemyBehavior : MonoBehaviour
 	void OnCollisionExit(Collision collision)
 	{
         // linkedButton.removeEnnemy done in the fixedUpdate !
-        if (collision.gameObject.tag == "Button")
-            enteringButton = false;
+//        if (collision.gameObject.tag == "Button")
+//            enteringButton = false;
 	}
 	
 	

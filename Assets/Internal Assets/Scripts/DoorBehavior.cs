@@ -92,6 +92,7 @@ public class DoorBehavior : MonoBehaviour
 
     public void removeEnnemy (GameObject ennemy)
     {
+//        Debug.Log ("-1 ennemy Door");
         if ( collidingEnnemiesList.Remove(ennemy) )
         {   // if ennemy is present in the list, remove it
 

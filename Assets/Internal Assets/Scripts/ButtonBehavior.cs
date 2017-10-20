@@ -82,7 +82,6 @@ public class ButtonBehavior : MonoBehaviour
 	
 	public void removeEnnemy (GameObject ennemy)
 	{
-        Debug.Log ("ButtonRemoveEnnemy");
 		if ( collidingEnnemiesList.Remove(ennemy) )
         {   // if ennemy is present in the list, remove it
 
