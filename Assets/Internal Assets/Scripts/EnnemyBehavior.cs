@@ -27,7 +27,7 @@ public class EnnemyBehavior : MonoBehaviour
 	private GameObject raycastedButton;                                 // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
 	private float maxDistanceRaycast = 10.0f;                           // maximum distance for raycasting during button detection
     private RaycastHit directDownHit;                                   // 
-
+    private bool enteringButton=false;
 
 
 
@@ -49,15 +49,21 @@ public class EnnemyBehavior : MonoBehaviour
          * BUTTON SWITCHING HANDLER
          */
         //TODO : DEBUG IT / FIND A WAY AROUND IT / WHAT CAUSED IT TO NOT WORK ANYMORE ? WAS IT WORKING IN THE FIRST PLACE ?
-//        if (linkedButton != null)
-//        {
-//            // Check that we didn't slide off the button (stacked up cube situation)
-//            if (linkedButton != checkButtonByRaycast ())
-//            {
-//                linkedButton.removeEnnemy (gameObject);
-//                linkedButton = null;
-//            }
-//        }
+        if (linkedButton != null)
+        {
+
+            // Check that we didn't slide off the button (stacked up cube situation)
+            if (linkedButton != checkButtonByRaycast () && enteringButton == false)
+            {
+                linkedButton.removeEnnemy (gameObject);
+                linkedButton = null;
+            }
+            // check that we're not entering button anymore / we're now ON the button
+            if (linkedButton != checkButtonByRaycast () && enteringButton == true)
+                enteringButton = false;
+        }
+
+
 
 		/*
 		 * STATE HANDLER
@@ -155,6 +161,8 @@ public class EnnemyBehavior : MonoBehaviour
 	void OnCollisionExit(Collision collision)
 	{
         // linkedButton.removeEnnemy done in the fixedUpdate !
+        if (collision.gameObject.tag == "Button")
+            enteringButton = false;
 	}
 	
 	
@@ -167,6 +175,7 @@ public class EnnemyBehavior : MonoBehaviour
 		    // (update or) link linkedButton variable
             linkedButton = collision.gameObject.GetComponent<ButtonBehavior>();
             linkedButton.addEnnemy(gameObject);
+            enteringButton = true;
 		}
 	}
 	
