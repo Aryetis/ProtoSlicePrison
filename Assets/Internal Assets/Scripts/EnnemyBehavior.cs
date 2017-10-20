@@ -128,7 +128,7 @@ public class EnnemyBehavior : MonoBehaviour
 			//Duplicate on collision with bullets 
 			changeToDuplicating();
 
-		if (collision.gameObject.name == "player")
+        if (collision.gameObject.CompareTag("Player"))
 		{
 			// Stun when collisioning with player from above
             // TODO change to raycast and measure angle to determine if above or not, should work better with slanted cubes
@@ -139,7 +139,7 @@ public class EnnemyBehavior : MonoBehaviour
 				PlayerBehavior.takeDamage(dmg);
 		}
 
-        if (collision.gameObject.tag == "Ennemy")
+        if (collision.gameObject.CompareTag("Ennemy"))
         {
             ButtonBehavior foo = collision.gameObject.GetComponent<EnnemyBehavior>().linkedButton;
             if (foo != null && checkButtonByRaycast () == foo)

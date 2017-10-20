@@ -82,17 +82,17 @@ public class ButtonBehavior : MonoBehaviour
 	
 	public void removeEnnemy (GameObject ennemy)
 	{
-        Debug.Log ("ButtonRemoveEnnemy");
-		if ( collidingEnnemiesList.Remove(ennemy) )
-        {   // if ennemy is present in the list, remove it
-
-            //pass the ennemy to the door
-            linkedDoorBehavior.removeEnnemy(ennemy);
-        
-			// remove weight, and change stateUpdated flag to refresh state in update()
-	        actualWeight--;
-			stateUpdated = true;
-		}
+//        Debug.Log ("ButtonRemoveEnnemy");
+//		if ( collidingEnnemiesList.Remove(ennemy) )
+//        {   // if ennemy is present in the list, remove it
+//
+//            //pass the ennemy to the door
+//            linkedDoorBehavior.removeEnnemy(ennemy);
+//        
+//			// remove weight, and change stateUpdated flag to refresh state in update()
+//	        actualWeight--;
+//			stateUpdated = true;
+//		}
 	}
 	
 	
