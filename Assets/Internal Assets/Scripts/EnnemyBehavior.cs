@@ -27,7 +27,7 @@ public class EnnemyBehavior : MonoBehaviour
 	private GameObject raycastedButton;                                 // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
 	private float maxDistanceRaycast = 10.0f;                           // maximum distance for raycasting during button detection
     private RaycastHit directDownHit;                                   // 
-
+    private bool enteringButton=false;
 
 
 
@@ -38,7 +38,6 @@ public class EnnemyBehavior : MonoBehaviour
         renderer = GetComponent<Renderer>();
 		linkedButton = null;
 		renderer = GetComponent<Renderer>();
-        pushAppartForce = new Vector2 (Random.value, Random.value);
     }
 	
 	
@@ -49,15 +48,23 @@ public class EnnemyBehavior : MonoBehaviour
         /*
          * BUTTON SWITCHING HANDLER
          */
+
+        //TODO : BEAUTIFY IT / WHAT CAUSED IT TO NOT WORK ANYMORE ? WAS/IS IT WORKING IN THE FIRST PLACE ?
         if (linkedButton != null)
         {
+
             // Check that we didn't slide off the button (stacked up cube situation)
-            if (linkedButton != checkButtonByRaycast ())
+            if (linkedButton != checkButtonByRaycast () && enteringButton == false)
             {
                 linkedButton.removeEnnemy (gameObject);
                 linkedButton = null;
             }
+            // check that we're not entering button anymore / we're now ON the button
+            if (linkedButton == checkButtonByRaycast () && enteringButton == true)
+                enteringButton = false;
         }
+
+
 
 		/*
 		 * STATE HANDLER
@@ -128,7 +135,7 @@ public class EnnemyBehavior : MonoBehaviour
 			//Duplicate on collision with bullets 
 			changeToDuplicating();
 
-		if (collision.gameObject.name == "player")
+        if (collision.gameObject.CompareTag("Player"))
 		{
 			// Stun when collisioning with player from above
             // TODO change to raycast and measure angle to determine if above or not, should work better with slanted cubes
@@ -139,7 +146,7 @@ public class EnnemyBehavior : MonoBehaviour
 				PlayerBehavior.takeDamage(dmg);
 		}
 
-        if (collision.gameObject.tag == "Ennemy")
+        if (collision.gameObject.CompareTag("Ennemy"))
         {
             ButtonBehavior foo = collision.gameObject.GetComponent<EnnemyBehavior>().linkedButton;
             if (foo != null && checkButtonByRaycast () == foo)
@@ -155,6 +162,8 @@ public class EnnemyBehavior : MonoBehaviour
 	void OnCollisionExit(Collision collision)
 	{
         // linkedButton.removeEnnemy done in the fixedUpdate !
+//        if (collision.gameObject.tag == "Button")
+//            enteringButton = false;
 	}
 	
 	
@@ -167,6 +176,7 @@ public class EnnemyBehavior : MonoBehaviour
 		    // (update or) link linkedButton variable
             linkedButton = collision.gameObject.GetComponent<ButtonBehavior>();
             linkedButton.addEnnemy(gameObject);
+            enteringButton = true;
 		}
 	}
 	
