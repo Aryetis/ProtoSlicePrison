@@ -2,9 +2,12 @@
 using System.Collections;
 
 public class PlayerBehavior : MonoBehaviour {
-	public GameObject BulletPrefab;
-	public Transform bulletsFolder;
+    public GameObject bulletPrefab;
+    public GameObject grenadePrefab;
+	public Transform projectilesFolder;
 	public float healingSpeed = 2f;
+    public float throwGrenadeAngle = 50f;
+    public float throwGrenadeForce = 15f;
 
 	private enum State {normal, onCoolDown, regenarating};
 	private int bleedCooldown = 5;
@@ -24,7 +27,9 @@ public class PlayerBehavior : MonoBehaviour {
 	void Update ()
 	{		
 		if(Input.GetButtonDown("Fire1"))
-			shoot();
+			Shoot();
+        if(Input.GetButtonDown("Fire2"))
+            ThrowGrenade();
 		if (stateUpdated)
 			switch(state)
 			{
@@ -44,19 +49,19 @@ public class PlayerBehavior : MonoBehaviour {
 
 
 
-	void changeToNormal()
+	void ChangeToNormal()
 	{
 		//TODO change material
 		state = State.normal;
 	}
 
-	void changeToOnCoolDown()
+	void ChangeToOnCoolDown()
 	{
 		//TODO change material
 		state = State.onCoolDown;
 	}
 
-	void changeToRegenerating()
+	void ChangeToRegenerating()
 	{
 		//TODO change material
 		state = State.regenarating;
@@ -70,7 +75,7 @@ public class PlayerBehavior : MonoBehaviour {
 	 *                                                                         *
 	 ***************************************************************************/
 
-	public static void takeDamage(float dmg)
+	public static void TakeDamage(float dmg)
 	{
 		dmgCoolDown = true;
 
@@ -81,18 +86,30 @@ public class PlayerBehavior : MonoBehaviour {
 	
 
 
-	void healing()
+	void Healing()
 	{
 		if(health != 100)
 			health++;
 	}
 
-	void shoot()
+	void Shoot()
 	{
-		GameObject bullet = (GameObject) Instantiate(BulletPrefab, Camera.main.transform.position, Camera.main.transform.rotation );
-		bullet.transform.parent = bulletsFolder;
+		GameObject bullet = (GameObject) Instantiate(bulletPrefab, Camera.main.transform.position, Camera.main.transform.rotation );
+		bullet.transform.parent = projectilesFolder;
 		Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
 		Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<CapsuleCollider>());
 		bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletForce);
 	}
+
+
+    void ThrowGrenade()
+    {
+        GameObject grenade = Instantiate(grenadePrefab, Camera.main.transform.position, Camera.main.transform.rotation);
+        grenade.transform.parent = projectilesFolder;
+        Physics.IgnoreCollision(grenade.GetComponent<Collider>(), GetComponent<Collider>());
+        Physics.IgnoreCollision(grenade.GetComponent<Collider>(), GetComponent<CapsuleCollider>());
+        Vector3 grenadeThrowVector = Quaternion.AngleAxis(throwGrenadeAngle, Vector3.Cross(grenade.transform.forward, Vector3.up)) * grenade.transform.forward * throwGrenadeForce;
+        grenadeThrowVector.Normalize();
+        grenade.GetComponent<Rigidbody>().AddForce(grenadeThrowVector*throwGrenadeForce, ForceMode.Impulse);
+    }
 }

@@ -100,21 +100,21 @@ public class EnnemyBehavior : MonoBehaviour
 	
 
 
-	public void changeToStunned()
+	public void ChangeToStunned()
 	{
 		GetComponent<Renderer>().material = stunnedEnnemy ;
 		state = State.stunned;
 		stateUpdated = true;
 	}
 
-	public void changeToWalking()
+	public void ChangeToWalking()
 	{
 		GetComponent<Renderer>().material = walkingEnnemy ;
 		state = State.walking;
 		stateUpdated = true;
 	}
 	
-	public void changeToDuplicating()
+	public void ChangeToDuplicating()
 	{
 		GetComponent<Renderer>().material = duplicatingEnnemy ;
 		state = State.duplicating;
@@ -133,7 +133,7 @@ public class EnnemyBehavior : MonoBehaviour
 	{
 		if ( collision.gameObject.tag == "Bullet" && state == State.walking )
 			//Duplicate on collision with bullets 
-			changeToDuplicating();
+			ChangeToDuplicating();
 
         if (collision.gameObject.CompareTag("Player"))
 		{
@@ -141,9 +141,9 @@ public class EnnemyBehavior : MonoBehaviour
             // TODO change to raycast and measure angle to determine if above or not, should work better with slanted cubes
 		    if ( collision.gameObject.transform.position.y - transform.position.y >=
 		        GetComponent<Collider>().bounds.size.y && state == State.walking )
-			    changeToStunned();
+			    ChangeToStunned();
 			else 
-				PlayerBehavior.takeDamage(dmg);
+				PlayerBehavior.TakeDamage(dmg);
 		}
 
         if (collision.gameObject.CompareTag("Ennemy"))
@@ -225,7 +225,7 @@ public class EnnemyBehavior : MonoBehaviour
             //reactivate collisions
             stateUpdated = false;
             Physics.IgnoreCollision (GetComponent<Collider> (), father.GetComponent<Collider> (), false);
-            changeToWalking ();
+            ChangeToWalking ();
         }
         else
         {
@@ -253,7 +253,7 @@ public class EnnemyBehavior : MonoBehaviour
 
 		yield return new WaitForSeconds(waitTime);
 
-		changeToWalking();
+		ChangeToWalking();
 	}
 
 
@@ -264,7 +264,7 @@ public class EnnemyBehavior : MonoBehaviour
 
 		yield return new WaitForSeconds(waitTime);
 
-		changeToWalking();
+		ChangeToWalking();
 	}
 
 
