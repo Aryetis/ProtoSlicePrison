@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+public enum TypeOfGrenade {Decoy, Explosive};
+
 public class GrenadeBehavior : MonoBehaviour
 {
-    enum TypeOfGrenade {Decoy, Explosive}
-    TypeOfGrenade type;
+    public TypeOfGrenade type = TypeOfGrenade.Explosive;
     [SerializeField] AudioClip detonationSound;
     [SerializeField] private float timeToDetonate = 6.0f;
     [SerializeField] private float detonationRadius = 10.0f;
-    [SerializeField] private float maxDetonationForce = 50.0f;
+    [SerializeField] private float maxDetonationForce = 1000.0f;
     [SerializeField] private float decoyRadius = 50.0f;
 
 
@@ -40,6 +43,8 @@ public class GrenadeBehavior : MonoBehaviour
         // Explode
         if(type == TypeOfGrenade.Explosive)
         {
+//            GameObject debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//            debugSphere.transform.localScale = new Vector3(detonationRadius, detonationRadius, detonationRadius);
             Vector3 explosionVector;
             float explosionForce;
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detonationRadius, LayerMask.GetMask("Ennemies"));
@@ -47,12 +52,15 @@ public class GrenadeBehavior : MonoBehaviour
             {
                 if(c.gameObject.CompareTag("Ennemy"))
                 {   // for each ennemy in Area of detonation
-                    explosionForce = ((detonationRadius-Vector3.Distance(c.gameObject.transform.position, transform.position))/detonationRadius)*maxDetonationForce;
+                    explosionForce = ((detonationRadius - Vector3.Distance(c.gameObject.transform.position, transform.position)) / detonationRadius) * maxDetonationForce;
                     explosionVector = (c.gameObject.transform.position - transform.position).normalized;
                     c.gameObject.GetComponent<Rigidbody>().AddForce(explosionVector * explosionForce, ForceMode.Impulse);
-                    Destroy(c.gameObject);
                 }
             }
+        }
+        else
+        {
+            Debug.Log("decoy !!!");
         }
 
         // Play Sound

@@ -5,6 +5,7 @@ public class PlayerBehavior : MonoBehaviour {
     public GameObject bulletPrefab;
     public GameObject grenadePrefab;
 	public Transform projectilesFolder;
+    public TypeOfGrenade grenadeType = TypeOfGrenade.Explosive;
 	public float healingSpeed = 2f;
     public float throwGrenadeAngle = 50f;
     public float throwGrenadeForce = 15f;
@@ -106,6 +107,7 @@ public class PlayerBehavior : MonoBehaviour {
     {
         GameObject grenade = Instantiate(grenadePrefab, Camera.main.transform.position, Camera.main.transform.rotation);
         grenade.transform.parent = projectilesFolder;
+        grenade.GetComponent<GrenadeBehavior>().type = TypeOfGrenade.Explosive;
         Physics.IgnoreCollision(grenade.GetComponent<Collider>(), GetComponent<Collider>());
         Physics.IgnoreCollision(grenade.GetComponent<Collider>(), GetComponent<CapsuleCollider>());
         Vector3 grenadeThrowVector = Quaternion.AngleAxis(throwGrenadeAngle, Vector3.Cross(grenade.transform.forward, Vector3.up)) * grenade.transform.forward * throwGrenadeForce;
