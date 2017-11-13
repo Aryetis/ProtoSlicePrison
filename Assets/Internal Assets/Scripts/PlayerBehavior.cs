@@ -5,7 +5,7 @@ public class PlayerBehavior : MonoBehaviour {
     public GameObject bulletPrefab;
     public GameObject grenadePrefab;
 	public Transform projectilesFolder;
-    public TypeOfGrenade grenadeType = TypeOfGrenade.Decoy;
+    public TypeOfGrenade grenadeType = TypeOfGrenade.Explosive;
 	public float healingSpeed = 2f;
     public float throwGrenadeAngle = 50f;
     public float throwGrenadeForce = 15f;
