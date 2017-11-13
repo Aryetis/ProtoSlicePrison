@@ -15,12 +15,16 @@ public class GrenadeBehavior : MonoBehaviour
     [SerializeField] private float maxDetonationForce = 1000.0f;
     [SerializeField] private float decoyRadius = 50.0f;
 
+    private SphereCollider decoySphereCollider; // Not in editor as we have to set its radius according to decoyRadius
+                                                // TODO beautify it with onGui()
 
 	// Use this for initialization
 	void Start ()
     {
-		
-	}
+        decoySphereCollider = gameObject.AddComponent<SphereCollider>() as SphereCollider;
+        decoySphereCollider.isTrigger = true;
+        decoySphereCollider.radius = decoyRadius;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -43,8 +47,6 @@ public class GrenadeBehavior : MonoBehaviour
         // Explode
         if(type == TypeOfGrenade.Explosive)
         {
-//            GameObject debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-//            debugSphere.transform.localScale = new Vector3(detonationRadius, detonationRadius, detonationRadius);
             Vector3 explosionVector;
             float explosionForce;
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detonationRadius, LayerMask.GetMask("Ennemies"));
@@ -60,12 +62,26 @@ public class GrenadeBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("decoy !!!");
+            OnTriggerExit(); // Force reset ennemies's target back to player;
         }
 
         // Play Sound
         AudioSource.PlayClipAtPoint(detonationSound,transform.position, 0.5f);
         // Destroy
         Destroy(gameObject);
+    }
+
+    void OnTriggerEnter(Collider col) // TODO : NOT WORKING right now because of case : 1/ multiple decoy at one place
+                                                                                     // 2/ ONE decoy rolls away, destroy, etc
+                                                                                     // 3/ It resets the target back to player for every ennemies
+    {
+        if(col.gameObject.CompareTag("Ennemy"))
+            col.gameObject.GetComponent<EnnemyBehavior>().target = gameObject; // Set grenade as new target for every Ennemy in radius
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.CompareTag("Ennemy"))
+            col.gameObject.GetComponent<EnnemyBehavior>().target = GameObject.Find("player"); // Set back player as target for every Ennemy going out of radius
     }
 }
