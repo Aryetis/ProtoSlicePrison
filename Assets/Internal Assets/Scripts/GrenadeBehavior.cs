@@ -60,10 +60,10 @@ public class GrenadeBehavior : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            OnTriggerExit(); // Force reset ennemies's target back to player;
-        }
+//        else
+//        {
+//            OnTriggerExit(); // Force reset ennemies's target back to player;
+//        }
 
         // Play Sound
         AudioSource.PlayClipAtPoint(detonationSound,transform.position, 0.5f);
