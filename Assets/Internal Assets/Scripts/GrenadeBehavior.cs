@@ -76,12 +76,12 @@ public class GrenadeBehavior : MonoBehaviour
                                                                                      // 3/ It resets the target back to player for every ennemies
     {
         if(col.gameObject.CompareTag("Ennemy"))
-            col.gameObject.GetComponent<EnnemyBehavior>().target = gameObject; // Set grenade as new target for every Ennemy in radius
+            col.gameObject.GetComponent<EnnemyBehavior>().SetTarget(gameObject); // Set grenade as new target for every Ennemy in radius
     }
 
     void OnTriggerExit(Collider col)
     {
         if(col.gameObject.CompareTag("Ennemy"))
-            col.gameObject.GetComponent<EnnemyBehavior>().target = GameObject.Find("player"); // Set back player as target for every Ennemy going out of radius
+            col.gameObject.GetComponent<EnnemyBehavior>().SetTarget(GameObject.Find("player")); // Set back player as target for every Ennemy going out of radius
     }
 }
