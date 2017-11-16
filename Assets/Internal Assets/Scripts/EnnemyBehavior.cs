@@ -203,10 +203,8 @@ public class EnnemyBehavior : MonoBehaviour
 
 	void walkingAction()
 	{
-        Debug.Log("target : " + target.name);
         if (!Physics.Linecast(transform.position, target.transform.position, ~(1 << 8 | 1 << 9))) // ( ~ <=> inverse bits) ignore layer 8 and 9
         {
-            Debug.Log("following");
             // check if there is collision with, anyLayer - Layer 8 "Ignore LineCast" and 9
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.transform.position.x, 0, target.transform.position.z), speed *  Time.deltaTime);
         }
