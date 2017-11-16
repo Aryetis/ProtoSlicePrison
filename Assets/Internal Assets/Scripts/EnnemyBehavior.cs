@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class EnnemyBehavior : MonoBehaviour
 {
-    [SerializeField] private const float speed = 1f;                     // move speed of the ennemy during walking phases
+    [SerializeField] private const float speed = 2f;                     // move speed of the ennemy during walking phases
     [SerializeField] private const float duplicateSequenceLength = 3.0f; // time of the duplicating sequence (=> addToButtonListno movement)
     [SerializeField] private const float stunLength = 3.0f;              // Stun time caused by upper collision with the player 
     [SerializeField] private GameObject ennemyPrefab;                    // ennemyPrefab used to spawn clones
@@ -24,7 +24,7 @@ public class EnnemyBehavior : MonoBehaviour
 	private State state = State.walking;
 	private bool stateUpdated = true;
 	private Renderer renderer;
-    private ButtonBehavior linkedButton;                                //button associated to ennemy
+    private ButtonBehavior linkedButton;                                // button associated to ennemy
 	private GameObject raycastedButton;                                 // button hit by Raycast (direction = Vector3.Down, all layers ignored except button one)
 	private float maxDistanceRaycast = 10.0f;                           // maximum distance for raycasting during button detection
     private RaycastHit directDownHit;                                   // 

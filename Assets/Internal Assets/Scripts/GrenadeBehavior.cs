@@ -75,13 +75,13 @@ public class GrenadeBehavior : MonoBehaviour
                                                                                      // 2/ ONE decoy rolls away, destroy, etc
                                                                                      // 3/ It resets the target back to player for every ennemies
     {
-        if(col.gameObject.CompareTag("Ennemy"))
+        if(col.gameObject.CompareTag("Ennemy") && type == TypeOfGrenade.Decoy)
             col.gameObject.GetComponent<EnnemyBehavior>().SetTarget(gameObject); // Set grenade as new target for every Ennemy in radius
     }
 
     void OnTriggerExit(Collider col)
     {
-        if(col.gameObject.CompareTag("Ennemy"))
+        if(col.gameObject.CompareTag("Ennemy") && type == TypeOfGrenade.Decoy)
             col.gameObject.GetComponent<EnnemyBehavior>().SetTarget(GameObject.Find("player")); // Set back player as target for every Ennemy going out of radius
     }
 }
