@@ -35,9 +35,7 @@ sysinfo.txt
 # ===================================== #
 [Ee]xported[Oo]bj/
 /*.booproj
-/*.csproj
 /*.pidb
-/*.sln*
 /*.suo
 /*.unityproj
 /*.user

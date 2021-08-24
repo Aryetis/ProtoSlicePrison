@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoSlicePrison", "ProtoSlicePrison.csproj", "{5648BE3D-0D43-C676-FC18-8CC9CD6CDFB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoSlicePrison.Plugins", "ProtoSlicePrison.Plugins.csproj", "{2FE56231-C98C-36A8-E70A-E7F2A3DFB20A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoSlicePrison.Editor", "ProtoSlicePrison.Editor.csproj", "{903906AE-2109-FBFD-136E-40E92AAC61A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5648BE3D-0D43-C676-FC18-8CC9CD6CDFB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5648BE3D-0D43-C676-FC18-8CC9CD6CDFB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5648BE3D-0D43-C676-FC18-8CC9CD6CDFB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5648BE3D-0D43-C676-FC18-8CC9CD6CDFB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FE56231-C98C-36A8-E70A-E7F2A3DFB20A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE56231-C98C-36A8-E70A-E7F2A3DFB20A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FE56231-C98C-36A8-E70A-E7F2A3DFB20A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FE56231-C98C-36A8-E70A-E7F2A3DFB20A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903906AE-2109-FBFD-136E-40E92AAC61A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903906AE-2109-FBFD-136E-40E92AAC61A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903906AE-2109-FBFD-136E-40E92AAC61A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903906AE-2109-FBFD-136E-40E92AAC61A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
